@@ -53,10 +53,61 @@ exports.findOne = (req, res) => {
 };
 
 // Update a Book by the id in the request
-exports.update = (req, res) => {};
+exports.update = (req, res) => {
+  const id = req.params.id;
+
+  Book.update(req.body, {
+    where: { id: id },
+  })
+    .then((num) => {
+      if (num === 1) {
+        res.send({
+          message: "Book updated successfully",
+        });
+      } else {
+        res.send({ message: "Something went wrong" });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Update failed",
+      });
+    });
+};
 
 // Delete a Book with the specified id in the request
-exports.delete = (req, res) => {};
+exports.delete = (req, res) => {
+  const id = req.params.id;
+
+  Book.destroy({
+    where: { id: id },
+  })
+    .then((num) => {
+      if (num === 1) {
+        res.send({ message: "Book deleted successfully" });
+      } else {
+        res.send({ message: "Deletion failed" });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Deletion failed",
+      });
+    });
+};
 
 // Delete all Books from the database
-exports.deleteAll = (req, res) => {};
+exports.deleteAll = (req, res) => {
+  Book.destroy({
+    where: {},
+    truncate: false,
+  })
+    .then((nums) => {
+      res.send({ message: `${nums} Books were deleted successfully` });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "An error occured while deleting all Books",
+      });
+    });
+};
