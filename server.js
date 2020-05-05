@@ -24,6 +24,9 @@ app.get("/", (req, res) => {
   res.json({ message: "Hello and welcome!" });
 });
 
+// routes
+require("./src/routes/book.routes")(app);
+
 const port = process.env.port || 4000;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
