@@ -38,7 +38,19 @@ exports.findAll = (req, res) => {
 };
 
 // Find a single Book with an id
-exports.findOne = (req, res) => {};
+exports.findOne = (req, res) => {
+  const id = req.params.id;
+
+  Book.findByPk(id)
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: `Error retrieving book with id: ${id}`,
+      });
+    });
+};
 
 // Update a Book by the id in the request
 exports.update = (req, res) => {};
